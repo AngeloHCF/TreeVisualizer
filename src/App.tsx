@@ -1,8 +1,10 @@
+import Input from "./Input"
+
 function App() {
   return (
-    <>
-      <p className="text-4xl">Hello World</p>
-    </>
+    <div>
+      <Input />
+    </div>
   )
 }
 
