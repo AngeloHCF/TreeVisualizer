@@ -29,6 +29,7 @@ const Input = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Example: [3, 2, 1, null, null]"
+          className='w-1/2 border-2'
         />
       </section>
 

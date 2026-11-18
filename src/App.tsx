@@ -2,7 +2,7 @@ import Input from "./Input"
 
 function App() {
   return (
-    <div>
+    <div className="bg-black h-screen text-white">
       <Input />
     </div>
   )
