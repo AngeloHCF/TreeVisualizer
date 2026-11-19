@@ -1,7 +1,7 @@
 import { hierarchy, tree } from "d3-hierarchy";
 
 interface TreeNode {
-  val: number;
+  val: number | null;
   left: TreeNode | null;
   right: TreeNode | null;
 }
@@ -24,7 +24,7 @@ function buildTree(values: (number | null)[]): TreeNode | null {
     const current = queue[head];
 
     // Left child
-    if (values[i] !== null) {
+    if (i < values.length) {
       const left: TreeNode = {
         val: values[i]!,
         left: null,
@@ -32,13 +32,13 @@ function buildTree(values: (number | null)[]): TreeNode | null {
       };
 
       current.left = left;
-      queue.push(left);
+      if (left.val !== null) queue.push(left);
     }
 
     i++;
 
     // Right child
-    if (i < values.length && values[i] !== null) {
+    if (i < values.length) {
       const right: TreeNode = {
         val: values[i]!,
         left: null,
@@ -46,7 +46,7 @@ function buildTree(values: (number | null)[]): TreeNode | null {
       };
 
       current.right = right;
-      queue.push(right);
+      if (right.val !== null) queue.push(right);
     }
 
     i++;
@@ -96,7 +96,7 @@ const Tree = ({ treeString }: TreeProps) => {
           key={i}
           transform={`translate(${node.x + 40}, ${node.y + 40})`}
         >
-          <circle r={20} fill="#2563eb" />
+          <circle r={20} fill={node.data.val === null ? "#64748b" : "#2563eb"} />
 
           <text
             textAnchor="middle"
@@ -104,7 +104,7 @@ const Tree = ({ treeString }: TreeProps) => {
             fill="white"
             fontSize={14}
           >
-            {node.data.val}
+            {node.data.val ?? "null"}
           </text>
         </g>
       ))}
