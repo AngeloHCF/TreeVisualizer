@@ -2,9 +2,10 @@ import Input from "./Input"
 
 function App() {
   return (
-    <div className="bg-black h-screen text-white">
+    <main className="app-shell">
+      <h1>Binary Tree Visualizer</h1>
       <Input />
-    </div>
+    </main>
   )
 }
 

@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+:root { font-family: Inter, system-ui, sans-serif; color: #e2e8f0; background: #090d16; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+#root { min-height: 100vh; }
+.app-shell { max-width: 1440px; margin: 0 auto; padding: 32px 24px; min-height: 100vh; }
+h1 { font-size: 28px; font-weight: 700; margin: 0 0 24px; }
+.input-panel { padding: 20px; background: #111827; border: 1px solid #334155; border-radius: 12px; }
+label { font-weight: 600; }
+.input-panel p { margin: 8px 0 14px; color: #94a3b8; font-size: 14px; }
+textarea { display: block; width: 100%; padding: 14px; resize: vertical; min-height: 120px; border: 1px solid #475569; border-radius: 8px; background: #090d16; color: #f1f5f9; font: 14px/1.6 ui-monospace, monospace; }
+textarea:focus-visible, .tree-canvas:focus-visible { outline: 2px solid #60a5fa; outline-offset: 3px; }
+textarea::placeholder { color: #64748b; }
+.input-panel .input-error { color: #fca5a5; margin-bottom: 0; }
+.tree-canvas { margin-top: 24px; overflow: auto; padding: 12px; border: 1px solid #334155; border-radius: 12px; background: #0f172a; }
+.tree-canvas svg { display: block; max-width: none; margin: 0 auto; }
+.empty-state { text-align: center; padding: 48px 16px; color: #94a3b8; }
+@media (max-width: 600px) { .app-shell { padding: 20px 12px; } h1 { font-size: 24px; } .input-panel { padding: 14px; } }

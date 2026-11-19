@@ -1,66 +1,12 @@
 import { hierarchy, tree } from "d3-hierarchy";
 
-interface TreeNode {
-  val: number | null;
-  left: TreeNode | null;
-  right: TreeNode | null;
-}
-
-function buildTree(values: (number | null)[]): TreeNode | null {
-  if (values.length === 0 || values[0] === null) {
-    return null;
-  }
-
-  const root: TreeNode = {
-    val: values[0],
-    left: null,
-    right: null,
-  };
-
-  const queue: TreeNode[] = [root];
-  let i = 1;
-
-  for (let head = 0; head < queue.length && i < values.length; head++) {
-    const current = queue[head];
-
-    // Left child
-    if (i < values.length) {
-      const left: TreeNode = {
-        val: values[i]!,
-        left: null,
-        right: null,
-      };
-
-      current.left = left;
-      if (left.val !== null) queue.push(left);
-    }
-
-    i++;
-
-    // Right child
-    if (i < values.length) {
-      const right: TreeNode = {
-        val: values[i]!,
-        left: null,
-        right: null,
-      };
-
-      current.right = right;
-      if (right.val !== null) queue.push(right);
-    }
-
-    i++;
-  }
-
-  return root;
-}
+import type { TreeNode } from "./treeData";
 
 interface TreeProps {
-  treeString: (number | null)[];
+  root: TreeNode | null;
 }
 
-const Tree = ({ treeString }: TreeProps) => {
-  const root = buildTree(treeString);
+const Tree = ({ root }: TreeProps) => {
 
   if (!root) return null;
 
@@ -72,19 +18,28 @@ const Tree = ({ treeString }: TreeProps) => {
   );
 
   // Calculate coordinates for each node
-  const layout = tree<TreeNode>().size([600, 280]);
+  const labelLength = Math.max(...hierarchyRoot.descendants().map((node) => String(node.data.val ?? "null").length));
+  const radius = Math.max(24, labelLength * 4.5 + 10);
+  const layout = tree<TreeNode>().nodeSize([radius * 2 + 24, radius * 2 + 56]);
   const positionedRoot = layout(hierarchyRoot);
+  const nodes = positionedRoot.descendants();
+  const minX = Math.min(...nodes.map((node) => node.x));
+  const maxX = Math.max(...nodes.map((node) => node.x));
+  const padding = radius + 24;
+  const width = maxX - minX + padding * 2;
+  const height = Math.max(...nodes.map((node) => node.y)) + padding * 2;
 
   return (
-    <svg viewBox="0 0 680 360" width="100%">
+    <div className="tree-canvas" tabIndex={0} aria-label="Scrollable tree visualization">
+    <svg viewBox={`${minX - padding} ${-padding} ${width} ${height}`} width={width} height={height} role="img" aria-label="Binary tree with labeled nodes and null children">
       {/* Draw connecting edges */}
       {positionedRoot.links().map((link, i) => (
         <line
           key={i}
-          x1={link.source.x + 40}
-          y1={link.source.y + 40}
-          x2={link.target.x + 40}
-          y2={link.target.y + 40}
+          x1={link.source.x}
+          y1={link.source.y}
+          x2={link.target.x}
+          y2={link.target.y}
           stroke="gray"
           strokeWidth={2}
         />
@@ -94,9 +49,9 @@ const Tree = ({ treeString }: TreeProps) => {
       {positionedRoot.descendants().map((node, i) => (
         <g
           key={i}
-          transform={`translate(${node.x + 40}, ${node.y + 40})`}
+          transform={`translate(${node.x}, ${node.y})`}
         >
-          <circle r={20} fill={node.data.val === null ? "#64748b" : "#2563eb"} />
+          <circle r={node.data.val === null ? 24 : radius} fill={node.data.val === null ? "#334155" : "#2563eb"} stroke={node.data.val === null ? "#94a3b8" : "#60a5fa"} />
 
           <text
             textAnchor="middle"
@@ -109,6 +64,7 @@ const Tree = ({ treeString }: TreeProps) => {
         </g>
       ))}
     </svg>
+    </div>
   );
 };
 
