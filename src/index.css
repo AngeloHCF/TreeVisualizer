@@ -6,6 +6,17 @@ body { margin: 0; min-width: 320px; min-height: 100vh; }
 #root { min-height: 100vh; }
 .app-shell { max-width: 1440px; margin: 0 auto; padding: 32px 24px; min-height: 100vh; }
 h1 { font-size: 28px; font-weight: 700; margin: 0 0 24px; }
+.app-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+.app-header h1 { margin: 0; }
+.add-tree-button { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid #60a5fa; border-radius: 8px; background: #2563eb; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+.add-tree-button span { font-size: 24px; line-height: 1; }
+.add-tree-button:hover { background: #1d4ed8; }
+.add-tree-button:focus-visible { outline: 2px solid #93c5fd; outline-offset: 3px; }
+.tree-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.tree-card { min-width: 0; }
+.tree-card:only-child { grid-column: 1 / -1; }
+.tree-card h2 { margin: 0 0 12px; font-size: 18px; font-weight: 600; }
+@media (max-width: 900px) { .tree-grid { grid-template-columns: minmax(0, 1fr); } }
 .input-panel { padding: 20px; background: #111827; border: 1px solid #334155; border-radius: 12px; }
 label { font-weight: 600; }
 .input-panel p { margin: 8px 0 14px; color: #94a3b8; font-size: 14px; }
